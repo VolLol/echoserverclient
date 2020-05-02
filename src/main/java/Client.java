@@ -6,7 +6,7 @@ public class Client {
     public static void main(String[] args) {
 
         String hostName = "localhost";
-        int portNumber = 2000;
+        int portNumber = 2002;
 
         try (Socket socket = new Socket(hostName, portNumber);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);//считывает исходящий поток
@@ -17,7 +17,7 @@ public class Client {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
-                System.out.println("Server answer is: " + in.readLine());
+                System.out.println("Server answer: " + in.readLine());
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);

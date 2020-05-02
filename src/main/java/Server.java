@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Server {
     public static void main(String[] args) {
-        int portNumber = 2000;
+        int portNumber = 2002;
         System.out.println("Server start working");
         System.out.println("----------------------------------------------");
 
@@ -17,11 +17,10 @@ public class Server {
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ) {
             String inputLine;//что выйдет в строке со стороны сервера и что пришло от польователя
+            Server server = new Server();
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Client write: " + inputLine);
-                Server server = new Server();
-                server.command(inputLine, out, in);
-
+                server.command(inputLine, out);
 
             }
         } catch (IOException e) {
@@ -31,16 +30,13 @@ public class Server {
         }
     }
 
-    public PrintWriter command(String inputLine, PrintWriter out, BufferedReader in) {
+    public PrintWriter command(String inputLine, PrintWriter out) {
         if (inputLine.equals("v")) {
             System.out.print("Client ask about version. Return version for him" + "\n");
             out.println("version is 123456");
         } else if (inputLine.equals("txt")) {
             System.out.print("Server need return txt. Return text from file" + "\n");
-            for (Object s : showFile()) {
-                out.println(s);
-            }
-
+            out.println(showFile());
         } else if (inputLine.contains("login") && inputLine.length() > 5) {
             System.out.print("Server need result of checking login and password" + "\n");
             String login = "nurs";
@@ -54,7 +50,7 @@ public class Server {
         return out;
     }
 
-    private List showFile() {
+    private List<String> showFile() {
         List<String> listOfStringsFromFile = new ArrayList<>();
         String path = "C:\\Develop\\simple echo server with client\\src\\main\\resources\\file.txt";
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
